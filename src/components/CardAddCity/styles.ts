@@ -2,13 +2,13 @@ import { StyleSheet } from "react-native";
 import theme from "../../global/theme";
 
 export const styles = StyleSheet.create({
+  loading: {
+    marginTop: 15,
+  },
   container: {
     backgroundColor: theme.colors.shape,
     borderRadius: 5,
-    padding: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
+    
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -17,7 +17,14 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginHorizontal: 15
+    
+    padding: 15,
+    marginTop: 15,
+    marginHorizontal: 15,
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   city: {
     fontSize: 24,
@@ -27,23 +34,14 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.text
   },
-  climate: {
-    marginTop: 10,
-    fontSize: 14,
-    color: theme.colors.secondary,
-    textTransform: "capitalize"
+  button: {
+    backgroundColor: theme.colors.secondary,
+    padding: 15,
+    borderRadius: 5,
   },
-  minMaxDegrees: {
-    fontSize: 14,
-    color: theme.colors.text
-  },
-  contentRight: {
-    alignItems: 'flex-end',
-    justifyContent: 'space-between'
-  },
-  degrees: {
-    fontSize: 34,
-    color: theme.colors.secondary
-  },
-
+  textButton: {
+    textAlign: "center",
+    color: theme.colors.shape,
+    fontSize: 16,
+  }
 })

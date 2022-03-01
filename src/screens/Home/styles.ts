@@ -2,11 +2,6 @@ import { StyleSheet } from "react-native";
 import theme from "../../global/theme";
 
 export const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   container: {
     flex: 1
   },
@@ -15,9 +10,9 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   title: {
-    margin: 15,
-    textAlign: 'center',
-    color: theme.colors.text,
-    fontSize: 16
+    fontSize: 20,
+    fontWeight: "bold",
+    color: theme.colors.text_dark,
+    margin: 15
   }
 })
