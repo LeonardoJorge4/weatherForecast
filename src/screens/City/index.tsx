@@ -10,7 +10,8 @@ import {
 
 import { Card } from '../../components/Card';
 
-import { CitiesAddedProps } from '../Home';
+import { CitiesAddedProps } from '../../contexts/CitiesContext';
+import theme from '../../global/theme';
 
 import { api } from '../../services/api';
 import { apiKey } from '../../services/apiKey';
@@ -36,7 +37,15 @@ export function City({ route }: RouteCityProps) {
 
   const [loading, setLoading] = useState(true);
   const [listDays, setListDays] = useState<CitiesAddedProps[] | []>([]);
-  const week = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+  const weekDays = [
+    "Domingo",
+    "Segunda-Feira",
+    "Terça-Feira",
+    "Quarta-Feira",
+    "Quinta-Feira",
+    "Sexta-Feira",
+    "Sábado"
+  ];
 
   useEffect(() => {
     async function loadData() {
@@ -48,7 +57,7 @@ export function City({ route }: RouteCityProps) {
               id: String(new Date().getTime()),
               city: new Date(item.dt * 1000).getDate() === new Date().getDate()
                 ? "Hoje"
-                : String(week[new Date(item.dt * 1000).getDay()]),
+                : String(weekDays[new Date(item.dt * 1000).getDay()]),
               subtitle: new Date(item.dt * 1000).toLocaleDateString('pt-BR', {
                 day: '2-digit',
                 month: 'long',
@@ -77,8 +86,8 @@ export function City({ route }: RouteCityProps) {
     loading
       ? <ActivityIndicator
           size="large"
-          color="#B2B2B2"
           style={styles.loading}
+          color={theme.colors.gray}
         />
       : <SafeAreaView style={styles.container}>
           <View style={styles.content}>

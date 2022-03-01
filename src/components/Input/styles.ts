@@ -1,8 +1,9 @@
 import { StyleSheet } from "react-native";
+import theme from "../../global/theme";
 
 export const styles = StyleSheet.create({
   inputContainer: {
-    backgroundColor: '#FFF',
+    backgroundColor: theme.colors.shape,
     borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',
@@ -21,7 +22,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 56,
     paddingHorizontal: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: theme.colors.shape,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
     borderRightWidth: 1,
@@ -29,7 +30,7 @@ export const styles = StyleSheet.create({
     color: '#666666'
   },
   addButton: {
-    backgroundColor: '#FFF',
+    backgroundColor: theme.colors.shape,
     height: 56,
     paddingHorizontal: 12,
     justifyContent: 'center',

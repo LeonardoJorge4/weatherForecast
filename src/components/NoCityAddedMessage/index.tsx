@@ -2,7 +2,9 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
+
 import { styles } from './styles';
+import theme from '../../global/theme';
 
 export function NoCityAddedMessage() {
   return (
@@ -10,7 +12,7 @@ export function NoCityAddedMessage() {
       <Icon
         size={42}
         name="frown"
-        color="#B2B2B2"
+        color={theme.colors.gray}
       />
       <Text style={styles.text}>
         No momento, você não possui

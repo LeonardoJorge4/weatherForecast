@@ -7,31 +7,29 @@ import {
   View
 } from 'react-native';
 
+import { useCity } from '../../contexts/CitiesContext';
+import theme from '../../global/theme';
+
 import { styles } from './styles';
 
-interface Props extends TouchableOpacityProps {
-  name: string;
-  loading: boolean;
-  addCity: () => void;
-}
+export function CardAddCity() {
+  const {
+    loadingAddCity,
+    cityFinded,
+    handleAddCity
+  } = useCity();
 
-export function CardAddCity({
-  name,
-  loading,
-  addCity,
-  ...rest
-}: Props) {
   return (
-    loading
+    loadingAddCity
     ? <ActivityIndicator
         size="large"
-        color="#B2B2B2"
         style={styles.loading}
+        color={theme.colors.gray}
       />
     : <View style={styles.container}>
         <View>
           <Text style={styles.city}>
-            {name}
+            {cityFinded}
           </Text>
           <Text style={styles.country}>
             Brasil
@@ -39,11 +37,10 @@ export function CardAddCity({
         </View>
 
         <TouchableOpacity
-          onPress={addCity}
-          disabled={loading}
           activeOpacity={0.7}
           style={styles.button}
-          {...rest}
+          onPress={handleAddCity}
+          disabled={loadingAddCity}
         >
           <Text style={styles.textButton}>
             Adicionar

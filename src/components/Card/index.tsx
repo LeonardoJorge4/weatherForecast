@@ -3,12 +3,12 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { CitiesAddedProps } from '../../screens/Home';
+import { CitiesAddedProps } from '../../contexts/CitiesContext';
 
 import { styles } from './styles';
 
 interface CardProps {
-  data: CitiesAddedProps
+  data: CitiesAddedProps;
   hasFavorite: boolean;
 }
 

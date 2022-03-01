@@ -1,18 +1,21 @@
 import React from 'react';
-import { ActivityIndicator, TextInput, TouchableOpacity, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
-import Icon from 'react-native-vector-icons/Feather';
+import { ButtonWithIcon } from '../ButtonWithIcon';
+
+import { useCity } from '../../contexts/CitiesContext';
 
 import { styles } from './styles';
+import theme from '../../global/theme';
 
-type Props = {
-  city: string;
-  loading: boolean;
-  setCity: (city: string) => void;
-  findCity: () => void;
-}
+export function Input() {
+  const {
+    city,
+    setCity,
+    setCityFinded,
+    handleFindCities
+  } = useCity();
 
-export function Input({ city, loading, setCity, findCity }: Props) {
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -21,28 +24,26 @@ export function Input({ city, loading, setCity, findCity }: Props) {
         returnKeyType="send"
         onChangeText={setCity}
         selectionColor="#666666"
-        placeholderTextColor="#B2B2B2"
+        onSubmitEditing={handleFindCities}
         placeholder="Pesquise uma cidade..."
+        placeholderTextColor={theme.colors.gray}
       />
+
       {
-        loading
-        ? <ActivityIndicator
-            size="small"
-            color="#B2B2B2"
-            style={styles.addButton}
-          />
-        : <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.addButton}
-            onPress={findCity}
-          >
-            <Icon
-              size={24}
-              name="search"
-              color="#B2B2B2"
-            />
-          </TouchableOpacity>
+        city !== "" &&
+        <ButtonWithIcon 
+          icon="x"
+          onPress={() => {
+            setCity("")
+            setCityFinded("")
+          }}
+        />
       }
+
+      <ButtonWithIcon
+        icon="search"
+        onPress={handleFindCities}
+      />
 
     </View>
   )
