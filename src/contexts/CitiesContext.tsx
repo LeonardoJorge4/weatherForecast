@@ -16,7 +16,7 @@ interface CitiesContextData {
   cityFinded: string;
   loadingAddCity: boolean;
   loadingFindCity: boolean;
-  citiesAdded: CitiesAddedProps[] | null;
+  citiesAdded: CitiesAddedProps[] | [];
 
   setCity: (city: string) => void;
   setCityFinded: (cityFinded: string) => void;
@@ -26,11 +26,14 @@ interface CitiesContextData {
 
   handleFindCities: () => void;
   handleAddCity: () => void;
+  handleFavoriteCity: (id: string) => void;
+  handleRemoveCity: (id: string, cityName: string) => void;
 }
 export interface CitiesAddedProps {
   id: string;
   city: string;
   subtitle: string;
+  favorite?: boolean;
   longitude?: string | any;
   latitude?: string | any;
   description: string;
@@ -46,7 +49,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
   const [cityFinded, setCityFinded] = useState('');
   const [loadingAddCity, setLoadingAddCity] = useState(false);
   const [loadingFindCity, setLoadingFindCity] = useState(false);
-  const [citiesAdded, setCitiesAdded] = useState<CitiesAddedProps[] | null>(null);
+  const [citiesAdded, setCitiesAdded] = useState<CitiesAddedProps[] | []>([]);
 
   useEffect(() => {
     async function loadData() {
@@ -57,16 +60,16 @@ export const CitiesProvider: React.FC = ({ children }) => {
       }
     }
 
-    loadData()
+    loadData();
   }, [citiesAdded])
 
   async function handleFindCities() {
     setLoadingFindCity(true)
-
+    
     if (city === "") {
       Alert.alert("Informe uma cidade para fazer a pesquisa")
     } else {
-      await apiCities.get(`${!city.trim() ? city : city.replace(' ', '-')}`)
+      await apiCities.get(`${!city.trim() ? city : city.split(' ').join('-')}`)
         .then(response => {
           if (response.data.length <= 0) {
             Alert.alert("Cidade não encontrada")
@@ -99,6 +102,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
             id: String(new Date().getTime()),
             city: cityFinded,
             subtitle: "Brasil",
+            favorite: false,
             longitude: String(response.data.coord.lon),
             latitude: String(response.data.coord.lat),
             temperature: Math.round(response.data.main.temp),
@@ -106,8 +110,8 @@ export const CitiesProvider: React.FC = ({ children }) => {
             temp_min: Math.round(response.data.main.temp_min),
             description: response.data.weather[0].description
           }
-          
-          setCitiesAdded(oldState => oldState ? [...oldState, cityInformation] : [cityInformation])
+
+          setCitiesAdded([...citiesAdded, cityInformation])
 
           await AsyncStorage.setItem(
             '@WeatherForecastApp:AddedCities',
@@ -128,6 +132,45 @@ export const CitiesProvider: React.FC = ({ children }) => {
       setLoadingAddCity(false)
     }
   }
+
+  async function handleFavoriteCity(id: string) {
+    citiesAdded.filter(city => {
+      city.id === id
+      ? city.favorite = !city.favorite
+      : city
+    })
+
+    await AsyncStorage.setItem(
+      '@WeatherForecastApp:AddedCities',
+      JSON.stringify(
+        [...citiesAdded]
+      )
+    )
+  }
+
+  async function handleRemoveCity(id: string, cityName: string) {
+    Alert.alert(`Tem certeza que deseja remover a cidade de ${cityName}?`, "", [
+      {
+        text: "Voltar",
+        onPress: () => {},
+        style: "cancel"
+      },
+      { 
+        text: "OK", onPress: async () => {
+          const data = citiesAdded.filter(
+            item => item.id !== id
+          )
+      
+          await AsyncStorage.setItem(
+            '@WeatherForecastApp:AddedCities',
+            JSON.stringify(
+              data
+            )
+          )
+        }
+      }
+    ])
+  } 
   
   return (
     <CitiesContext.Provider value={{
@@ -145,6 +188,8 @@ export const CitiesProvider: React.FC = ({ children }) => {
       
       handleFindCities,
       handleAddCity,
+      handleFavoriteCity,
+      handleRemoveCity,
     }}
     >
       {children}

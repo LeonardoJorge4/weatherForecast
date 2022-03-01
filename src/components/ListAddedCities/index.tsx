@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { Card } from '../Card';
-import { NoCityAddedMessage } from '../NoCityAddedMessage';
+import { NoDataMessage } from '../NoDataMessage';
 
 import { useCity } from '../../contexts/CitiesContext';
 
@@ -17,7 +17,7 @@ import { styles } from './styles';
 
 export function ListAddedCities() {
   const navigation = useNavigation();
-  const { citiesAdded } = useCity();
+  const { citiesAdded, handleRemoveCity } = useCity();
 
   function handleNavigate(
     cityName: string,
@@ -35,8 +35,13 @@ export function ListAddedCities() {
   }
 
   return (
-    !citiesAdded
-    ? <NoCityAddedMessage />
+    citiesAdded.length <= 0
+    ? <View style={styles.containerNoData}>
+        <NoDataMessage
+          iconName="emoticon-sad-outline"
+          title="No momento, você não possui cidades adicionadas a sua lista"
+        />
+      </View>
     : <View style={styles.container}>
         <Text style={styles.title}>
           Cidades adicionadas
@@ -48,6 +53,7 @@ export function ListAddedCities() {
           renderItem={({ item }) => (
             <TouchableOpacity
               activeOpacity={0.7}
+              onLongPress={() => handleRemoveCity(item.id, item.city)}
               onPress={() => handleNavigate(item.city, item.latitude, item.longitude)}
             >
               <Card

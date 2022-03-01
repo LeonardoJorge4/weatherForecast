@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { CitiesAddedProps } from '../../contexts/CitiesContext';
+import { CitiesAddedProps, useCity } from '../../contexts/CitiesContext';
 
 import { styles } from './styles';
 
@@ -13,6 +13,8 @@ interface CardProps {
 }
 
 export function Card({ data, hasFavorite }: CardProps) {
+  const { handleFavoriteCity } = useCity();
+
   return (
     <View style={styles.container}>
       <View>
@@ -38,11 +40,12 @@ export function Card({ data, hasFavorite }: CardProps) {
           hasFavorite &&
           <TouchableOpacity
             activeOpacity={0.7}
+            onPress={() => handleFavoriteCity(data.id)}
           >
-            <Icon 
+            <Icon
               size={24}
               color="red"
-              name="favorite-border"
+              name={data.favorite ? "favorite" : "favorite-border"}
             />
           </TouchableOpacity>
         }

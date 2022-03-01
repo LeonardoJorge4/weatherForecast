@@ -14,7 +14,6 @@ import { useCity } from '../../contexts/CitiesContext';
 
 import { styles } from './styles';
 
-
 export function Home() {
   const { cityFinded } = useCity()
 

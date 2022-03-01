@@ -8,15 +8,18 @@ import {
   View
 } from 'react-native';
 
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
 import { Card } from '../../components/Card';
 
 import { CitiesAddedProps } from '../../contexts/CitiesContext';
-import theme from '../../global/theme';
 
 import { api } from '../../services/api';
 import { apiKey } from '../../services/apiKey';
 
 import { styles } from './styles';
+import theme from '../../global/theme';
 
 interface RouteCityProps {
   route: {
@@ -51,18 +54,13 @@ export function City({ route }: RouteCityProps) {
     async function loadData() {
       await api.get(`onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely,alerts,current&units=metric&lang=pt_br&appid=${apiKey}`)
         .then((response) => {
-
           response.data.daily.map((item: any) => {
             const necessaryValues = {
               id: String(new Date().getTime()),
               city: new Date(item.dt * 1000).getDate() === new Date().getDate()
                 ? "Hoje"
                 : String(weekDays[new Date(item.dt * 1000).getDay()]),
-              subtitle: new Date(item.dt * 1000).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric'
-              }),
+              subtitle: format(new Date(item.dt * 1000), "dd 'de' MMMM 'de' yyyy", { locale: ptBR }),
               temperature: Math.round(item.temp.day),
               temp_max: Math.round(item.temp.max),
               temp_min: Math.round(item.temp.min),
