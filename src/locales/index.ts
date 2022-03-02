@@ -4,7 +4,7 @@ import I18n from 'i18n-js';
 import en from './en-US';
 import pt from './pt-BR';
 
-const normalizeTranslate = {
+const normalizeTranslate: any = {
   'en_US': 'en_US',
   'pt_BR': 'pt_BR',
   'en': 'en_US',

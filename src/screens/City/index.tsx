@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 
 import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { ptBR, enUS } from 'date-fns/locale'
 
 import { Card } from '../../components/Card';
 
-import { CitiesAddedProps } from '../../contexts/CitiesContext';
+import { CitiesAddedProps, useCity } from '../../contexts/CitiesContext';
 
 import { api } from '../../services/api';
 import { apiKey } from '../../services/apiKey';
@@ -41,6 +41,7 @@ export function City({ route }: RouteCityProps) {
     longitude,
     typeTemperature,
   } = route.params;
+  const { language } = useCity();
 
   const [loading, setLoading] = useState(true);
   const [listDays, setListDays] = useState<CitiesAddedProps[] | []>([]);
@@ -53,18 +54,27 @@ export function City({ route }: RouteCityProps) {
     translate('friday'),
     translate('saturday')
   ];
+  const dateTypeText = language === 'en_US' ? "yyyy-MM-dd" : "dd 'de' MMMM 'de' yyyy"
 
   useEffect(() => {
     async function loadData() {
-      await api.get(`onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely,alerts,current&units=${typeTemperature === 'C' ? 'metric' : 'imperial'}&lang=pt_br&appid=${apiKey}`)
+      await api.get(`onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely,alerts,current&units=${typeTemperature === '°C' ? 'metric' : 'imperial'}&lang=${language === 'en_US' ? 'en_us' : 'pt_br'}&appid=${apiKey}`)
         .then((response) => {
           response.data.daily.map((item: any) => {
+            const formatedDateSubtitle = format(
+              new Date(item.dt * 1000),
+              dateTypeText,
+              { locale: language === 'en_US' ? enUS : ptBR }
+            );
+            const weekDayName = new Date(item.dt * 1000).getDate() === new Date().getDate()
+              ? language === 'en_US' ? 'Today' : 'Hoje'
+              : String(weekDays[new Date(item.dt * 1000).getDay()]);
+            ;
+
             const necessaryValues = {
               id: String(new Date().getTime()),
-              city: new Date(item.dt * 1000).getDate() === new Date().getDate()
-                ? "Hoje"
-                : String(weekDays[new Date(item.dt * 1000).getDay()]),
-              subtitle: format(new Date(item.dt * 1000), "dd 'de' MMMM 'de' yyyy", { locale: ptBR }),
+              city: weekDayName,
+              subtitle: formatedDateSubtitle,
               typeTemperature: typeTemperature,
               temperature: Math.round(item.temp.day),
               temp_max: Math.round(item.temp.max),
@@ -95,7 +105,7 @@ export function City({ route }: RouteCityProps) {
       : <SafeAreaView style={styles.container}>
           <View style={styles.content}>
             <Text style={styles.title}>
-              {translate('titleForecastCity')} {listDays.length} {translate('daysText')}
+              {translate('titleForecastCity')} {listDays.length} {language !== 'en_US' && translate('daysText')}
             </Text>
             <ScrollView>
               {

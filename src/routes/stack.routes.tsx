@@ -7,8 +7,9 @@ import { Home } from '../screens/Home';
 
 import { SwitchTemperature } from '../components/SwitchTemperature';
 
-import theme from '../global/theme';
 import { translate } from '../locales';
+
+import theme from '../global/theme';
 
 const { Navigator, Screen } = createStackNavigator();
 

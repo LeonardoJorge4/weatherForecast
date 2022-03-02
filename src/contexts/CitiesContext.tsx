@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import { Alert } from 'react-native';
+import { Alert, NativeModules, Platform } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -21,6 +21,7 @@ interface CitiesContextData {
   citiesAdded: CitiesAddedProps[] | [];
   isCelcius: boolean;
   cityCountry: string;
+  language: string;
 
   setCity: (city: string) => void;
   setCityFinded: (cityFinded: string) => void;
@@ -58,6 +59,10 @@ export const CitiesProvider: React.FC = ({ children }) => {
   const [citiesAdded, setCitiesAdded] = useState<CitiesAddedProps[] | []>([]);
   const [isCelcius, setIsCelcius] = useState(true); //true Celcius, false Fahrenheit
   const [cityCountry, setCityCountry] = useState('');
+  const language = Platform.OS === 'ios'
+    ? NativeModules.SettingsManager.settings.AppleLocale
+    : NativeModules.I18nManager.localeIdentifier
+  ;
 
   useEffect(() => {
     async function loadData() {
@@ -78,15 +83,17 @@ export const CitiesProvider: React.FC = ({ children }) => {
     if (city === "") {
       Alert.alert(translate('errorInformCity'))
     } else {
-      await apiCities.get(`direct?q=${!city.trim() ? city : city.split(' ').join('-')}&limit=1&lang=pt_br&appid=${apiKey}`)
+      await apiCities.get(`direct?q=${!city.trim() ? city : city.split(' ').join('-')}&limit=1&lang=${language === 'en_US' ? 'en_us' : 'pt_br'}&appid=${apiKey}`)
         .then(response => {
           if (response.data.length <= 0) {
             Alert.alert(translate('errorCityNotFound'))
           } else {
             setCityFinded(
-              response.data[0].local_names.pt
-              ? response.data[0].local_names.pt
-              : response.data[0].local_names.es
+              language === 'en_US'
+              ? response.data[0].name
+              : response.data[0].local_names.pt
+                ? response.data[0].local_names.pt
+                : response.data[0].local_names.es
             )
             setCityCountry(response.data[0].country)
           }
@@ -111,7 +118,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
     } else {
       setLoadingAddCity(true)
 
-      await api.get(`weather?q=${cityFinded}&lang=pt_br&units=${isCelcius ? 'metric' : 'imperial'}&appid=${apiKey}`)
+      await api.get(`weather?q=${cityFinded}&lang=${language === 'en_US' ? 'en_us' : 'pt_br'}&units=${isCelcius ? 'metric' : 'imperial'}&appid=${apiKey}`)
         .then(async (response) => {
           const cityInformation: CitiesAddedProps = {
             id: String(new Date().getTime()),
@@ -199,6 +206,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
       citiesAdded,
       isCelcius,
       cityCountry,
+      language,
 
       setCity,
       setCityFinded,
