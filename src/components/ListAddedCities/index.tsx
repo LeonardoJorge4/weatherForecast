@@ -22,14 +22,16 @@ export function ListAddedCities() {
   function handleNavigate(
     cityName: string,
     latitude: string,
-    longitude: string
+    longitude: string,
+    typeTemperature: string,
   ) {
     navigation.navigate(
       "City" as never,
       { 
         name: cityName,
         latitude: latitude,
-        longitude: longitude
+        longitude: longitude,
+        typeTemperature: typeTemperature
       } as never
     )
   }
@@ -54,7 +56,14 @@ export function ListAddedCities() {
             <TouchableOpacity
               activeOpacity={0.7}
               onLongPress={() => handleRemoveCity(item.id, item.city)}
-              onPress={() => handleNavigate(item.city, item.latitude, item.longitude)}
+              onPress={() => {
+                handleNavigate(
+                  item.city, 
+                  item.latitude, 
+                  item.longitude,
+                  item.typeTemperature
+                )
+              }}
             >
               <Card
                 data={item}

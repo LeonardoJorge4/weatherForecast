@@ -41,9 +41,17 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'space-between'
   },
+  containerTexts: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  textTypeTemperature: {
+    marginLeft: 7.5,
+    fontSize: 16,
+    color: theme.colors.text
+  },
   degrees: {
     fontSize: 34,
     color: theme.colors.secondary
   },
-
 })

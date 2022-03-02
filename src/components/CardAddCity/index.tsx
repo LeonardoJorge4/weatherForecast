@@ -16,6 +16,7 @@ export function CardAddCity() {
   const {
     loadingAddCity,
     cityFinded,
+    cityCountry,
     handleAddCity
   } = useCity();
 
@@ -32,7 +33,7 @@ export function CardAddCity() {
             {cityFinded}
           </Text>
           <Text style={styles.country}>
-            Brasil
+            {cityCountry}
           </Text>
         </View>
 

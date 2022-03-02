@@ -1,14 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Home } from '../screens/Home';
+import StackRoutes from './stack.routes';
+
 import { Favorites } from '../screens/Favorites';
 
 import theme from '../global/theme';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import StackRoutes from './stack.routes';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 

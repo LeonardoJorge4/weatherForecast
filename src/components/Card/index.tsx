@@ -13,7 +13,7 @@ interface CardProps {
 }
 
 export function Card({ data, hasFavorite }: CardProps) {
-  const { handleFavoriteCity } = useCity();
+  const { isCelcius, handleFavoriteCity } = useCity();
 
   return (
     <View style={styles.container}>
@@ -33,9 +33,14 @@ export function Card({ data, hasFavorite }: CardProps) {
       </View>
 
       <View style={styles.contentRight}>
-        <Text style={styles.degrees}>
-          {data.temperature}°
-        </Text>
+        <View style={styles.containerTexts}>
+          <Text style={styles.degrees}>
+            {data.temperature}°
+          </Text>
+          <Text style={styles.textTypeTemperature}>
+            {data.typeTemperature}
+          </Text>
+        </View>
         {
           hasFavorite &&
           <TouchableOpacity

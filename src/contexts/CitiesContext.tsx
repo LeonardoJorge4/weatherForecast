@@ -17,12 +17,15 @@ interface CitiesContextData {
   loadingAddCity: boolean;
   loadingFindCity: boolean;
   citiesAdded: CitiesAddedProps[] | [];
+  isCelcius: boolean;
+  cityCountry: string;
 
   setCity: (city: string) => void;
   setCityFinded: (cityFinded: string) => void;
   setLoadingAddCity: (loadingAddCity: boolean) => void;
   setLoadingFindCity: (loadingFindCity: boolean) => void;
   setCitiesAdded: (citiesAdded: CitiesAddedProps[]) => void;
+  setIsCelcius: (isCelcius: boolean) => void;
 
   handleFindCities: () => void;
   handleAddCity: () => void;
@@ -36,6 +39,7 @@ export interface CitiesAddedProps {
   favorite?: boolean;
   longitude?: string | any;
   latitude?: string | any;
+  typeTemperature: string;
   description: string;
   temp_max: number;
   temp_min: number;
@@ -50,6 +54,8 @@ export const CitiesProvider: React.FC = ({ children }) => {
   const [loadingAddCity, setLoadingAddCity] = useState(false);
   const [loadingFindCity, setLoadingFindCity] = useState(false);
   const [citiesAdded, setCitiesAdded] = useState<CitiesAddedProps[] | []>([]);
+  const [isCelcius, setIsCelcius] = useState(true); //true Celcius, false Fahrenheit
+  const [cityCountry, setCityCountry] = useState('');
 
   useEffect(() => {
     async function loadData() {
@@ -69,12 +75,17 @@ export const CitiesProvider: React.FC = ({ children }) => {
     if (city === "") {
       Alert.alert("Informe uma cidade para fazer a pesquisa")
     } else {
-      await apiCities.get(`${!city.trim() ? city : city.split(' ').join('-')}`)
+      await apiCities.get(`direct?q=${!city.trim() ? city : city.split(' ').join('-')}&limit=1&lang=pt_br&appid=${apiKey}`)
         .then(response => {
           if (response.data.length <= 0) {
             Alert.alert("Cidade não encontrada")
           } else {
-            setCityFinded(response.data.nome)
+            setCityFinded(
+              response.data[0].local_names.pt
+              ? response.data[0].local_names.pt
+              : response.data[0].local_names.es
+            )
+            setCityCountry(response.data[0].country)
           }
         })
         .catch(error => {
@@ -96,13 +107,14 @@ export const CitiesProvider: React.FC = ({ children }) => {
     } else {
       setLoadingAddCity(true)
 
-      await api.get(`weather?q=${cityFinded}&lang=pt_br&units=metric&appid=${apiKey}`)
+      await api.get(`weather?q=${cityFinded}&lang=pt_br&units=${isCelcius ? 'metric' : 'imperial'}&appid=${apiKey}`)
         .then(async (response) => {
           const cityInformation: CitiesAddedProps = {
             id: String(new Date().getTime()),
             city: cityFinded,
-            subtitle: "Brasil",
+            subtitle: response.data.sys.country,
             favorite: false,
+            typeTemperature: `°${isCelcius ? 'C' : 'F'}`,
             longitude: String(response.data.coord.lon),
             latitude: String(response.data.coord.lat),
             temperature: Math.round(response.data.main.temp),
@@ -179,12 +191,15 @@ export const CitiesProvider: React.FC = ({ children }) => {
       loadingAddCity,
       loadingFindCity,
       citiesAdded,
+      isCelcius,
+      cityCountry,
 
       setCity,
       setCityFinded,
       setLoadingAddCity,
       setLoadingFindCity,
       setCitiesAdded,
+      setIsCelcius,
       
       handleFindCities,
       handleAddCity,

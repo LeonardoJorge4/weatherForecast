@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -6,6 +6,8 @@ import { City } from '../screens/City';
 
 import theme from '../global/theme';
 import { Home } from '../screens/Home';
+import { Switch, Text, View } from 'react-native';
+import { SwitchTemperature } from '../components/SwitchTemperature';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -24,6 +26,9 @@ function StackRoutes() {
         component={Home}
         options={{
           title: "Início",
+          headerRight: () => (
+            <SwitchTemperature />
+          )
         }}
       />
       
