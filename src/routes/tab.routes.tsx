@@ -9,6 +9,7 @@ import StackRoutes from './stack.routes';
 import { Favorites } from '../screens/Favorites';
 
 import theme from '../global/theme';
+import { translate } from '../locales';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ function TabRoutes() {
           name="HomeRoutes"
           component={StackRoutes}
           options={{
-            title: "Início",
+            title: translate('initialTitle'),
             headerShown: false,
             tabBarIcon: ({ focused }) => (
               <Icon
@@ -48,7 +49,7 @@ function TabRoutes() {
           name="Favorites"
           component={Favorites}
           options={{
-            title: "Favoritos",
+            title: translate('favoritesTitle'),
             tabBarIcon: ({ focused }) => (
               <Icon 
                 size={24}

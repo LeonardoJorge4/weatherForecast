@@ -13,6 +13,8 @@ import { NoDataMessage } from '../NoDataMessage';
 
 import { useCity } from '../../contexts/CitiesContext';
 
+import { translate } from '../../locales';
+
 import { styles } from './styles';
 
 export function ListAddedCities() {
@@ -41,12 +43,12 @@ export function ListAddedCities() {
     ? <View style={styles.containerNoData}>
         <NoDataMessage
           iconName="emoticon-sad-outline"
-          title="No momento, você não possui cidades adicionadas a sua lista"
+          title={translate('titleNoDataMessageCities')}
         />
       </View>
     : <View style={styles.container}>
         <Text style={styles.title}>
-          Cidades adicionadas
+          {translate('addedCitiesText')}
         </Text>
         <FlatList
           data={citiesAdded}

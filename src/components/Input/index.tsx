@@ -5,6 +5,8 @@ import { ButtonWithIcon } from '../ButtonWithIcon';
 
 import { useCity } from '../../contexts/CitiesContext';
 
+import { translate } from '../../locales';
+
 import { styles } from './styles';
 import theme from '../../global/theme';
 
@@ -25,7 +27,7 @@ export function Input() {
         onChangeText={setCity}
         selectionColor="#666666"
         onSubmitEditing={handleFindCities}
-        placeholder="Pesquise uma cidade..."
+        placeholder={translate('searchCity')}
         placeholderTextColor={theme.colors.gray}
       />
 

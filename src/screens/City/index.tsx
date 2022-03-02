@@ -18,6 +18,8 @@ import { CitiesAddedProps } from '../../contexts/CitiesContext';
 import { api } from '../../services/api';
 import { apiKey } from '../../services/apiKey';
 
+import { translate } from '../../locales';
+
 import { styles } from './styles';
 import theme from '../../global/theme';
 
@@ -43,13 +45,13 @@ export function City({ route }: RouteCityProps) {
   const [loading, setLoading] = useState(true);
   const [listDays, setListDays] = useState<CitiesAddedProps[] | []>([]);
   const weekDays = [
-    "Domingo",
-    "Segunda-Feira",
-    "Terça-Feira",
-    "Quarta-Feira",
-    "Quinta-Feira",
-    "Sexta-Feira",
-    "Sábado"
+    translate('sunday'),
+    translate('monday'),
+    translate('tuesday'),
+    translate('wednesday'),
+    translate('thursday'),
+    translate('friday'),
+    translate('saturday')
   ];
 
   useEffect(() => {
@@ -74,7 +76,7 @@ export function City({ route }: RouteCityProps) {
           })
         })
         .catch((error) => {
-          Alert.alert(`Erro ao buscar dados da cidade de ${name}`)
+          Alert.alert(`${translate('errorFindCity')} ${name}`)
           console.log(error)
         })
         .finally(() => setLoading(false))
@@ -93,7 +95,7 @@ export function City({ route }: RouteCityProps) {
       : <SafeAreaView style={styles.container}>
           <View style={styles.content}>
             <Text style={styles.title}>
-              Previsão do tempo para os próximos {listDays.length} dias
+              {translate('titleForecastCity')} {listDays.length} {translate('daysText')}
             </Text>
             <ScrollView>
               {

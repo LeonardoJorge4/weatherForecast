@@ -7,9 +7,11 @@ import {
 } from 'react-native';
 
 import { useCity } from '../../contexts/CitiesContext';
-import theme from '../../global/theme';
+
+import { translate } from '../../locales';
 
 import { styles } from './styles';
+import theme from '../../global/theme';
 
 export function CardAddCity() {
   const {
@@ -43,7 +45,7 @@ export function CardAddCity() {
           disabled={loadingAddCity}
         >
           <Text style={styles.textButton}>
-            Adicionar
+            {translate('addText')}
           </Text>
         </TouchableOpacity>
       </View>

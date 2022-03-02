@@ -3,7 +3,8 @@ import theme from "../../global/theme";
 
 export const styles = StyleSheet.create({
   containerNoData: {
-    marginTop: 15
+    marginTop: 15,
+    paddingHorizontal: 15
   },
   container: {
     flex: 1,

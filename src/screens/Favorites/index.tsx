@@ -9,18 +9,21 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { Card } from '../../components/Card';
+import { NoDataMessage } from '../../components/NoDataMessage';
+
 import { useCity } from '../../contexts/CitiesContext';
 
+import { translate } from '../../locales';
+
 import { styles } from './styles';
-import { NoDataMessage } from '../../components/NoDataMessage';
 
 export function Favorites() {
   const { citiesAdded, handleRemoveCity } = useCity();
   const navigation = useNavigation();
 
   const [hasFavorite, setHasFavorite] = useState(false);
-  const titleNoDataMessage = 'Parece que você ainda não adicionou uma cidade aos favoritos';
-  const subtitleNoDataMessage = 'Tente adicionar uma cidade pressionando o botão com o coração nas cidades adicionadas'
+  const titleNoDataMessage = translate('titleNoDataMessageFavorites');
+  const subtitleNoDataMessage = translate('subtitleNoDataMessageFavorites');
 
   useEffect(() => {
     function loadData() {

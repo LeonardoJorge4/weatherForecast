@@ -11,6 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiKey } from '../services/apiKey';
 import { api, apiCities } from '../services/api';
 
+import { translate } from '../locales';
+
 interface CitiesContextData {
   city: string;
   cityFinded: string;
@@ -74,12 +76,12 @@ export const CitiesProvider: React.FC = ({ children }) => {
     setLoadingFindCity(true)
     
     if (city === "") {
-      Alert.alert("Informe uma cidade para fazer a pesquisa")
+      Alert.alert(translate('errorInformCity'))
     } else {
       await apiCities.get(`direct?q=${!city.trim() ? city : city.split(' ').join('-')}&limit=1&lang=pt_br&appid=${apiKey}`)
         .then(response => {
           if (response.data.length <= 0) {
-            Alert.alert("Cidade não encontrada")
+            Alert.alert(translate('errorCityNotFound'))
           } else {
             setCityFinded(
               response.data[0].local_names.pt
@@ -90,7 +92,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
           }
         })
         .catch(error => {
-          Alert.alert("Erro ao buscar cidade")
+          Alert.alert(translate('errorFindCityHome'))
           console.log(error)
         })
     }
@@ -105,7 +107,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
       : false
 
     if (cityAlreadyExists) {
-      return Alert.alert("Cidade já adicionada")
+      return Alert.alert(translate('cityAlreadyAdded'))
     } else {
       setLoadingAddCity(true)
 
@@ -139,7 +141,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
           setCity("")
         })
         .catch(error => {
-          Alert.alert("Erro ao adicionar cidade")
+          Alert.alert(translate('errorAddCity'))
           console.log(error)
         })
 
@@ -165,9 +167,9 @@ export const CitiesProvider: React.FC = ({ children }) => {
 
   //Remove uma cidade do usuário
   async function handleRemoveCity(id: string, cityName: string) {
-    Alert.alert(`Tem certeza que deseja remover a cidade de ${cityName}?`, "", [
+    Alert.alert(`${translate('removeCityConfirm')} ${cityName}?`, "", [
       {
-        text: "Voltar",
+        text: translate('cancelRemoveCity'),
         onPress: () => {},
         style: "cancel"
       },

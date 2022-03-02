@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { City } from '../screens/City';
+import { Home } from '../screens/Home';
+
+import { SwitchTemperature } from '../components/SwitchTemperature';
 
 import theme from '../global/theme';
-import { Home } from '../screens/Home';
-import { Switch, Text, View } from 'react-native';
-import { SwitchTemperature } from '../components/SwitchTemperature';
+import { translate } from '../locales';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -25,7 +26,7 @@ function StackRoutes() {
         name="Home"
         component={Home}
         options={{
-          title: "Início",
+          title: translate('initialTitle'),
           headerRight: () => (
             <SwitchTemperature />
           )
