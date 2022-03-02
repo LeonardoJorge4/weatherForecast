@@ -35,7 +35,11 @@ function TabRoutes() {
               <Icon
                 size={24}
                 name="home"
-                color={focused ? theme.colors.primary : "#ccc"}
+                color={
+                  focused
+                  ? theme.colors.primary
+                  : "#ccc"
+                }
               />
             )
           }}
@@ -49,7 +53,11 @@ function TabRoutes() {
               <Icon 
                 size={24}
                 name="favorite"
-                color={focused ? theme.colors.primary : "#ccc"}
+                color={
+                  focused
+                  ? theme.colors.primary
+                  : "#ccc"
+                }
               />
             )
           }}

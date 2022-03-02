@@ -13,9 +13,6 @@ export function SwitchTemperature() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>
-        {isCelcius ? '°C' : '°F'}
-      </Text>
       <Switch
         value={isCelcius}
         onValueChange={toggleSwitch}
@@ -26,6 +23,9 @@ export function SwitchTemperature() {
           true: theme.colors.shape
         }}
       />
+      <Text style={styles.text}>
+        °{isCelcius ? 'C' : 'F'}
+      </Text>
     </View>
   )
 }

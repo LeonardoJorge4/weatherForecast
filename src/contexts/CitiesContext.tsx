@@ -49,7 +49,7 @@ export interface CitiesAddedProps {
 const CitiesContext = createContext<CitiesContextData>({} as CitiesContextData)
 
 export const CitiesProvider: React.FC = ({ children }) => {
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState(''); //Valor recebido do input de pesquisa
   const [cityFinded, setCityFinded] = useState('');
   const [loadingAddCity, setLoadingAddCity] = useState(false);
   const [loadingFindCity, setLoadingFindCity] = useState(false);
@@ -69,6 +69,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
     loadData();
   }, [citiesAdded])
 
+  //Busca as cidades para adicionar
   async function handleFindCities() {
     setLoadingFindCity(true)
     
@@ -97,6 +98,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
     setLoadingFindCity(false)
   }
 
+  //adiciona a cidade na lista do usuário
   async function handleAddCity() {
     const cityAlreadyExists = citiesAdded !== null
       ? citiesAdded.find((item) => item.city === cityFinded)
@@ -145,6 +147,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
     }
   }
 
+  //adiciona a cidade na lista de favoritos do usuário
   async function handleFavoriteCity(id: string) {
     citiesAdded.filter(city => {
       city.id === id
@@ -160,6 +163,7 @@ export const CitiesProvider: React.FC = ({ children }) => {
     )
   }
 
+  //Remove uma cidade do usuário
   async function handleRemoveCity(id: string, cityName: string) {
     Alert.alert(`Tem certeza que deseja remover a cidade de ${cityName}?`, "", [
       {

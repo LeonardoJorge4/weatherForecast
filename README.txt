@@ -1,0 +1,3 @@
+- Para remover uma cidade da lista, clique e segure o botão.
+- Foi utilizado como forma de destaque para as cidades favoritas, uma página exclusiva para as cidades favoritas.
+- Um botão switch no header altera entre Celcius e Fahrenheit ao adicionar uma cidade.

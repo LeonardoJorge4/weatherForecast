@@ -13,7 +13,7 @@ interface CardProps {
 }
 
 export function Card({ data, hasFavorite }: CardProps) {
-  const { isCelcius, handleFavoriteCity } = useCity();
+  const { handleFavoriteCity } = useCity();
 
   return (
     <View style={styles.container}>

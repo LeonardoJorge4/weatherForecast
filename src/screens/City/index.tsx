@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { format } from 'date-fns'
-import { ptBR, enUS } from 'date-fns/locale'
+import { ptBR } from 'date-fns/locale'
 
 import { Card } from '../../components/Card';
 
